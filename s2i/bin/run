@@ -1,0 +1,24 @@
+#!/bin/bash -e
+#
+# S2I run script for the 's2i-java' image.
+# The run script executes the server that runs your application.
+#
+# For more information see the documentation:
+#	https://github.com/openshift/source-to-image/blob/master/docs/builder_image.md
+#
+
+ARTIFACT_DIR=${ARTIFACT_DIR:-.}
+echo "---> Starting asup arms-streaming application"
+echo "--> # APP_FILE = $APP_FILE"
+echo "--> # JAVA_OPTS = $JAVA_OPTS"
+#APP_FILE="${APP_FILE:-app.jar}"
+APP_FILE="${APP_FILE}"
+if [[ -f "$APP_FILE" ]]; then
+  echo "---> APP_FILE found"
+  echo "---> Running application from jar (java $JAVA_OPTS  $APP_FILE $CLASS_PATH $ARG) ..."
+  #java $JAVA_OPTS -jar $APP_FILE
+  java $JAVA_OPTS $APP_FILE $CLASS_PATH $ARG
+else
+  echo "---> Running application from jar (java $JAVA_OPTS -jar $(find $ARTIFACT_DIR -name *.jar)) ..."
+  #java $JAVA_OPTS -jar `find $ARTIFACT_DIR -name *.jar`
+fi
